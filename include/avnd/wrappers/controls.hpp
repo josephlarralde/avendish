@@ -59,6 +59,20 @@ static constexpr void apply_control(T& ctl, std::floating_point auto v)
     ctl.value = range_value<T>(closest_value_index<T>(ctl.value));
   }
 }
+
+template <typename T>
+static constexpr void apply_control(T& ctl, avnd::string_ish auto v)
+{
+  // Apply the value
+  if constexpr(avnd::parameter_with_values_range<T>)
+  {
+    ctl.value = range_value<T>(closest_value_index<T>(ctl.value));
+  }
+  else
+  {
+    ctl.value = v;
+  }
+}
 /*
 static void apply_control(auto& ctl, std::string&& v)
 {

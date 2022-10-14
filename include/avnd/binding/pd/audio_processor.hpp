@@ -187,10 +187,10 @@ struct audio_processor
           // TODO ?
           std::string res = argv[0].a_w.w_symbol->s_name;
           // thread_local for perf ?
-          avnd::for_each_field_ref(state.inputs, [s, &res, &state](auto& ctl) {
+          avnd::for_each_field_ref(state.inputs, [s, &res, &state]<typename F>(F& ctl) {
             if constexpr(requires { ctl.value = std::string{}; })
             {
-              if(std::string_view{ctl.name()} == s->s_name)
+              if(std::string_view{F::name()} == s->s_name)
               {
                 avnd::apply_control(ctl, std::move(res));
                 if_possible(ctl.update(state.effect));
@@ -254,8 +254,8 @@ audio_processor_metaclass<T>::audio_processor_metaclass()
   //static_assert(std::is_aggregate_v<T>);
   static_assert(std::is_aggregate_v<instance>);
   static_assert(std::is_nothrow_constructible_v<instance>);
-  static_assert(std::is_nothrow_move_constructible_v<instance>);
-  static_assert(std::is_nothrow_move_assignable_v<instance>);
+  // static_assert(std::is_nothrow_move_constructible_v<instance>);
+  // static_assert(std::is_nothrow_move_assignable_v<instance>);
 #endif
 
   /// Small wrapper methods which will call into our actual type ///
