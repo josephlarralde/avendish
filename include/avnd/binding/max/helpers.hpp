@@ -12,8 +12,8 @@
 
 #include <string_view>
 
-struct t_inlet;
-struct t_outlet;
+// struct t_inlet;
+// struct t_outlet;
 
 namespace max
 {
