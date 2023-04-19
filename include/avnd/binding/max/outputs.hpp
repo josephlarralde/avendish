@@ -4,9 +4,6 @@
 
 #include <avnd/binding/max/helpers.hpp>
 
-struct t_inlet;
-struct t_outlet;
-
 namespace max
 {
 template <typename T>
