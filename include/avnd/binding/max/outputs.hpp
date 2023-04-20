@@ -48,7 +48,7 @@ struct outputs
           for (std::size_t i = 0; i < v.size(); ++i) {
             atom_setfloat(l + i, v[i]);
           }
-          outlet_list(p, gensym("list"), v.size(), &l);
+          outlet_list(p, gensym("list"), v.size(), &l[0]);
         };
       }
     }
