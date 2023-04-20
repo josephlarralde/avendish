@@ -1,5 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+#define C74_USE_STRICT_TYPES 1
+
 #include <@AVND_MAIN_FILE@>
 #include <avnd/binding/max/audio_processor.hpp>
 #include <avnd/binding/max/message_processor.hpp>
