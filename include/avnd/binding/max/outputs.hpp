@@ -64,7 +64,7 @@ struct outputs
               atom_setsym(l + i, gensym(*s));
             }
           }
-        }
+        };
       }
     }
     else
