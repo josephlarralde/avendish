@@ -197,7 +197,7 @@ struct outputs
             if (auto a = std::get_if<float>(&v[i + offset])) {
               SETFLOAT(&outatoms[i], *a);
             } else if (auto a = std::get_if<const char*>(&v[i + offset])) {
-              SETSYMBOL(&outatoms[i], *a);
+              SETSYMBOL(&outatoms[i], a);
             }
           }
 
