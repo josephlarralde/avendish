@@ -14,6 +14,7 @@ struct outputs
   {
     using func_t = typename call_type::type;
     using refl = avnd::function_reflection_t<func_t>;
+    using atom = std::variant<float, const char*>;
 
     call.context = &outlet;
     call.function = nullptr;
@@ -50,6 +51,20 @@ struct outputs
           }
           outlet_list(p, gensym("list"), v.size(), &l[0]);
         };
+      }
+      else if constexpr(std::is_same_v<func_t, void(std::vector<atom>)>)
+      {
+        call.function = [](void* ptr, std::vector<atom> v) {
+          t_outlet* p = static_cast<t_outlet*>(ptr);
+          t_atom l[v.size()];
+          for (std::size_t i = 0; i < v.size(); ++i) {
+            if (auto& f = std::get_if<float>(v[i])) {
+              atom_setfloat(l + i, f);
+            } else if (auto& s = std::get_if<const char*>(v[i])) {
+              atom_setsym(l + i, s);
+            }
+          }
+        }
       }
     }
     else

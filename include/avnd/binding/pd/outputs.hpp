@@ -140,6 +140,7 @@ struct outputs
   {
     using func_t = typename call_type::type;
     using refl = avnd::function_reflection_t<func_t>;
+    using atom = std::variant<float, const char*>;
 
     call.context = &outlet;
     call.function = nullptr;
@@ -164,6 +165,47 @@ struct outputs
         call.function = [](void* ptr, const char* f) {
           t_outlet* p = static_cast<t_outlet*>(ptr);
           outlet_symbol(p, gensym(f));
+        };
+      }
+    //}
+    //else if constexpr(refl::count > 1)
+    //{
+      else if constexpr(std::is_same_v<func_t, void(std::vector<float>&)>)
+      {
+        call.function = [](void* ptr, std::vector<float>& v) {
+          t_outlet* p = static_cast<t_outlet*>(ptr);
+          t_atom outatoms[v.size()];
+          for (auto i = 0; i < v.size(); ++i) {
+            SETFLOAT(outatoms[i], v[i]);
+          }
+          outlet_list(p, &s_list, v.size(), outatoms);
+        };
+      }
+      else if constexpr(std::is_same_v<func_t, void(std::vector<atom>&)>)
+      {
+        call.function = [](void* ptr, std::vector<atom>& v) {
+          t_outlet* p = static_cast<t_outlet*>(ptr);
+          t_atom outatoms[v.size()];
+          const char* msg;
+          std::size_t offset = 0;
+
+          if (msg = std::get_if<const char*>(v[0])) {
+            offset = 1;
+          }
+
+          for (auto i = 0; i < v.size() - offset; ++i) {
+            if (auto& a = std::get_if<float>(v[i + offset])) {
+              SETFLOAT(outatoms[i], a);
+            } else if (auto& a = std::get_if<const char*>(v[i + offset])) {
+              SETSYMBOL(outatoms[i], a);
+            }
+          }
+
+          if (offset == 0) {
+            outlet_list(p, &s_list, v.size(), outatoms);
+          } else {
+            outlet_anything(p, gensym(msg), v.size() - 1, outatoms);
+          }
         };
       }
     }
