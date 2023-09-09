@@ -41,9 +41,9 @@ struct outputs
           outlet_anything(p, gensym(f), 0, nullptr);
         };
       }
-      else if constexpr(std::is_same_v<func_t, void(std::vector<float>)>)
+      else if constexpr(std::is_same_v<func_t, void(std::vector<float>&)>)
       {
-        call.function = [](void* ptr, std::vector<float> v) {
+        call.function = [](void* ptr, std::vector<float>& v) {
           t_outlet* p = static_cast<t_outlet*>(ptr);
           t_atom l[v.size()];
           for (std::size_t i = 0; i < v.size(); ++i) {
@@ -52,9 +52,9 @@ struct outputs
           outlet_list(p, gensym("list"), v.size(), &l[0]);
         };
       }
-      else if constexpr(std::is_same_v<func_t, void(std::vector<atom>)>)
+      else if constexpr(std::is_same_v<func_t, void(std::vector<atom>&)>)
       {
-        call.function = [](void* ptr, std::vector<atom> v) {
+        call.function = [](void* ptr, std::vector<atom>& v) {
           t_outlet* p = static_cast<t_outlet*>(ptr);
           t_atom l[v.size()];
           for (std::size_t i = 0; i < v.size(); ++i) {
