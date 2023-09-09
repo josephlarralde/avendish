@@ -61,7 +61,7 @@ struct outputs
             if (auto f = std::get_if<float>(&v[i])) {
               atom_setfloat(l + i, *f);
             } else if (auto s = std::get_if<const char*>(&v[i])) {
-              atom_setsym(l + i, *s);
+              atom_setsym(l + i, gensym(*s));
             }
           }
         }
