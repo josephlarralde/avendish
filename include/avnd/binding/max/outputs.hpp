@@ -58,10 +58,10 @@ struct outputs
           t_outlet* p = static_cast<t_outlet*>(ptr);
           t_atom l[v.size()];
           for (std::size_t i = 0; i < v.size(); ++i) {
-            if (auto& f = std::get_if<float>(v[i])) {
-              atom_setfloat(l + i, f);
-            } else if (auto& s = std::get_if<const char*>(v[i])) {
-              atom_setsym(l + i, s);
+            if (auto f = std::get_if<float>(&v[i])) {
+              atom_setfloat(l + i, *f);
+            } else if (auto s = std::get_if<const char*>(&v[i])) {
+              atom_setsym(l + i, *s);
             }
           }
         }

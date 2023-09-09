@@ -186,25 +186,25 @@ struct outputs
         call.function = [](void* ptr, std::vector<atom>& v) {
           t_outlet* p = static_cast<t_outlet*>(ptr);
           t_atom outatoms[v.size()];
-          const char* msg;
+          const char** msg;
           std::size_t offset = 0;
 
-          if (msg = std::get_if<const char*>(v[0])) {
+          if (msg = std::get_if<const char*>(&v[0])) {
             offset = 1;
           }
 
           for (auto i = 0; i < v.size() - offset; ++i) {
-            if (auto& a = std::get_if<float>(v[i + offset])) {
-              SETFLOAT(&outatoms[i], a);
-            } else if (auto& a = std::get_if<const char*>(v[i + offset])) {
-              SETSYMBOL(&outatoms[i], a);
+            if (auto a = std::get_if<float>(&v[i + offset])) {
+              SETFLOAT(&outatoms[i], *a);
+            } else if (auto a = std::get_if<const char*>(&v[i + offset])) {
+              SETSYMBOL(&outatoms[i], *a);
             }
           }
 
           if (offset == 0) {
             outlet_list(p, &s_list, v.size(), outatoms);
           } else {
-            outlet_anything(p, gensym(msg), v.size() - 1, outatoms);
+            outlet_anything(p, gensym(*msg), v.size() - 1, outatoms);
           }
         };
       }
