@@ -176,7 +176,7 @@ struct outputs
           t_outlet* p = static_cast<t_outlet*>(ptr);
           t_atom outatoms[v.size()];
           for (auto i = 0; i < v.size(); ++i) {
-            SETFLOAT(outatoms[i], v[i]);
+            SETFLOAT(&outatoms[i], v[i]);
           }
           outlet_list(p, &s_list, v.size(), outatoms);
         };
@@ -195,9 +195,9 @@ struct outputs
 
           for (auto i = 0; i < v.size() - offset; ++i) {
             if (auto& a = std::get_if<float>(v[i + offset])) {
-              SETFLOAT(outatoms[i], a);
+              SETFLOAT(&outatoms[i], a);
             } else if (auto& a = std::get_if<const char*>(v[i + offset])) {
-              SETSYMBOL(outatoms[i], a);
+              SETSYMBOL(&outatoms[i], a);
             }
           }
 
