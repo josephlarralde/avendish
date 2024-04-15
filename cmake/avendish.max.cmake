@@ -18,6 +18,8 @@ elseif(EXISTS "${AVND_MAXSDK_PATH}/c74support/max-includes")
   set(MAXSDK_MAX_INCLUDE_DIR "${AVND_MAXSDK_PATH}/c74support/max-includes")
   set(MAXSDK_MSP_INCLUDE_DIR "${AVND_MAXSDK_PATH}/c74support/msp-includes")
   set(MAXSDK_JIT_INCLUDE_DIR "${AVND_MAXSDK_PATH}/c74support/jit-includes")
+else()
+  message(FATAL_ERROR "MAX INCLUDE DIR NOT FOUND")
 endif()
 
 message(STATUS "MAX INCLUDE DIR : ${MAXSDK_MAX_INCLUDE_DIR}")
