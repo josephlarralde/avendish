@@ -6,8 +6,6 @@ if(NOT AVND_MAXSDK_PATH)
   return()
 endif()
 
-# set(AVND_MAXSDK_PATH )
-
 if(EXISTS "${AVND_MAXSDK_PATH}/source/max-sdk-base/c74support/max-includes")
   set(MAXSDK_MAX_INCLUDE_DIR "${AVND_MAXSDK_PATH}/source/max-sdk-base/c74support/max-includes")
   set(MAXSDK_MSP_INCLUDE_DIR "${AVND_MAXSDK_PATH}/source/max-sdk-base/c74support/msp-includes")
@@ -21,11 +19,8 @@ elseif(EXISTS "${AVND_MAXSDK_PATH}/c74support/max-includes")
   set(MAXSDK_MSP_INCLUDE_DIR "${AVND_MAXSDK_PATH}/c74support/msp-includes")
   set(MAXSDK_JIT_INCLUDE_DIR "${AVND_MAXSDK_PATH}/c74support/jit-includes")
 else()
-  message(STATUS "${AVND_MAXSDK_PATH}")
-  message(FATAL_ERROR "MAX INCLUDE DIR NOT FOUND")
+  message(STATUS "MAXSDK DIR NOT FOUND")
 endif()
-
-message(STATUS "MAX INCLUDE DIR : ${MAXSDK_MAX_INCLUDE_DIR}")
 
 if(APPLE)
   find_library(MAXSDK_API_LIBRARY NAMES MaxAPI HINTS "${MAXSDK_MAX_INCLUDE_DIR}")
